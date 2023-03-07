@@ -13,7 +13,7 @@ app.use('/api/auth', require('./routes/auth'))
 app.use('/api/notes', require('./routes/notes'))
 
 app.get('/', (req, res) => {
-  res.send('This is the home page');
+  res.send('This is the home page || ');
 })
 
 app.listen(port, () => {
