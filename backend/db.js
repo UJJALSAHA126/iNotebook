@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
-const mongoURI = "mongodb://0.0.0.0:27017";
+const mongoURI = "mongodb://0.0.0.0:27017/iNotebook";
 
 const connectToMongo = () => {
   mongoose
     .connect(mongoURI)
     .then(() => {
-      console.log("Mongodb Connected Successfully");
+      console.log("Mongodb is Connected Successfully");
     })
-    .catch(() => {
-      console.log("Error while connecting Mongodb");
+    .catch((error) => {
+      console.log("Error while connecting to Mongodb\nError :: " + error);
     });
 };
 
