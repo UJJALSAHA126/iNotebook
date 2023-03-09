@@ -37,8 +37,10 @@ const NoteState = (props) => {
         }
 
         const response = await addNoteToServer(newNote);
-
         console.log('Response Add', response);
+        
+        if (response.status !== 200) return;
+
         const json = await response.json();
 
         setNotes(notes.concat(json));
@@ -92,6 +94,9 @@ const NoteState = (props) => {
 
         const response = await deleteNoteFromServer(id);
         console.log('Delete Note', response)
+        console.log('Delete Note Status', response.status);
+
+        if (response.status !== 200) return;
 
         const newNotes = notes.filter((note) => (note._id !== id));
         setNotes(newNotes);
