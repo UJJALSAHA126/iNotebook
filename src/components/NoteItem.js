@@ -24,7 +24,7 @@ function NoteItem(props) {
                         </div>
                     </div>
 
-                    <span className="card-text text-justify">{note.description} Lorem ipsum dolor sit </span>
+                    <span className="card-text text-justify">{note.description}</span>
                 </div>
             </div>
         </div>

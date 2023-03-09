@@ -1,15 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
     let location = useLocation();
-    // const [path, setPath] = useState("/");
-
-    useEffect(() => {
-        // console.log('Location ', location.pathname);
-        // setPath(location.pathname);
-
-    }, [location]);
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">

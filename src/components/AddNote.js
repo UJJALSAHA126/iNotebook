@@ -7,7 +7,6 @@ function AddNote() {
 
     const [note, setNote] = useState(
         {
-            "_id": "640adf785dda3d43235003dfb6c7",
             "user": "64075cf490605cfb8f75857a",
             "title": "Added Note",
             "description": "Mem Nil Rocks Added",
@@ -26,7 +25,6 @@ function AddNote() {
         setNote({ ...note, [e.target.name]: e.target.value });
     }
 
-
     return (
         <div className="container my-3">
 
@@ -37,15 +35,17 @@ function AddNote() {
                     <label htmlFor="title" className="form-label">Title</label>
                     <input type="text" className="form-control" id="title" name="title" aria-describedby="emailHelp" onChange={onChange} />
                 </div>
+                
                 <div className="mb-3">
                     <label htmlFor="description" className="form-label">Description</label>
                     <input type="text" className="form-control" id="description" name="description" onChange={onChange} />
                 </div>
 
-                <div className="mb-3 form-check">
-                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
+                <div className="mb-3">
+                    <label htmlFor="tag" className="form-label">Tag</label>
+                    <input type="text" className="form-control" id="tag" name="tag" onChange={onChange} />
                 </div>
+
                 <button className="btn btn-primary" onClick={handleClick}>Add Note</button>
             </form>
         </div>
