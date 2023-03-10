@@ -22,6 +22,11 @@ const NoteState = (props) => {
         });
 
         const json = await response.json();
+
+        console.log('json', json);
+        json.sort((a, b) => { return b.date.localeCompare(a.date) });
+        console.log('json', json);
+
         setNotes(json);
         // console.log('JSON', json);
     }
@@ -38,7 +43,7 @@ const NoteState = (props) => {
 
         const response = await addNoteToServer(newNote);
         console.log('Response Add', response);
-        
+
         if (response.status !== 200) return;
 
         const json = await response.json();
@@ -75,14 +80,36 @@ const NoteState = (props) => {
 
 
     // Editing a note
-    const editNote = async () => {
+    const editNote = async (note) => {
+        const response = await editNoteToServer(note);
+        console.log('Response Update', response);
+
+        if (response.status !== 200) return;
+
+        const newNotes = notes.filter((noteI) => (note._id !== noteI._id));
+        newNotes.push(note);
+
+        newNotes.sort((a, b) => { return b.date.localeCompare(a.date) });
+        setNotes(newNotes);
 
     }
 
     // Editing a note on the server
-    const editNoteToServer = async () => {
+    const editNoteToServer = async (note) => {
 
+        const data = JSON.stringify(note);
 
+        const response = await fetch(`${hostId}/api/notes/updatenote/${note._id}`, {
+            method: "PUT", // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzVjZjQ5MDYwNWNmYjhmNzU4NTdhIn0sImlhdCI6MTY3ODIxMzA1Mn0.Le8SUdfNIi66adYQSXG6bcChAtR8fhDOxT5-4ZXuwO8"
+            },
+
+            body: data
+        });
+
+        return response;
     }
 
 

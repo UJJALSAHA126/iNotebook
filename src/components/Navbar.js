@@ -5,7 +5,8 @@ function Navbar() {
     let location = useLocation();
 
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        // data-bs-theme="dark"
+        <nav className="navbar navbar-expand-lg bg-body-tertiary" >
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">Navbar</Link>
 
