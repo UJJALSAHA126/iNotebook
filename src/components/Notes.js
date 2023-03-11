@@ -50,12 +50,12 @@ function Notes() {
         <>
 
             {/* <Link to="/about"> */}
-            <button type="button" className="btn btn-primary btn-lg my-3" onClick={() => handleUpdateClicked(note)}>
+            {/* <button type="button" className="btn btn-primary btn-lg my-3" onClick={() => handleUpdateClicked(note)}>
                 Add a new note
-            </button>
+            </button> */}
             {/* </Link> */}
 
-            {/* <AddNote /> */}
+            <AddNote />
 
 
             {/* <!-- Button trigger modal --> */}

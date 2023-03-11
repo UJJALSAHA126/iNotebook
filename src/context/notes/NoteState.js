@@ -1,13 +1,14 @@
 import NoteContext from "./noteContext";
 import { useState } from "react";
+import hostId, { getAuthToken } from "../../constants/Constants";
+
+
 
 const NoteState = (props) => {
-
-    const hostId = "http://localhost:5000";
-
     const notesInitial = [];
 
     const [notes, setNotes] = useState(notesInitial)
+    const authToken = getAuthToken();
 
 
     // Fetching all the notes from the server
@@ -17,18 +18,18 @@ const NoteState = (props) => {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzVjZjQ5MDYwNWNmYjhmNzU4NTdhIn0sImlhdCI6MTY3ODIxMzA1Mn0.Le8SUdfNIi66adYQSXG6bcChAtR8fhDOxT5-4ZXuwO8"
+                "auth-token": authToken
             },
         });
 
         const json = await response.json();
 
-        console.log('json', json);
+        // console.log('json', json);
         json.sort((a, b) => { return b.date.localeCompare(a.date) });
-        console.log('json', json);
+        // console.log('json', json);
 
         setNotes(json);
-        // console.log('JSON', json);
+        // // console.log('JSON', json);
     }
 
 
@@ -42,14 +43,16 @@ const NoteState = (props) => {
         }
 
         const response = await addNoteToServer(newNote);
-        console.log('Response Add', response);
+        // console.log('Response Add', response);
 
         if (response.status !== 200) return;
 
         const json = await response.json();
+        const newNotes = notes.concat(json);
+        newNotes.sort((a, b) => { return b.date.localeCompare(a.date) });
 
-        setNotes(notes.concat(json));
-        console.log('Note Added : ', json);
+        setNotes(newNotes);
+        // console.log('Note Added : ', json);
     }
 
     // Add note to the server
@@ -67,7 +70,7 @@ const NoteState = (props) => {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzVjZjQ5MDYwNWNmYjhmNzU4NTdhIn0sImlhdCI6MTY3ODIxMzA1Mn0.Le8SUdfNIi66adYQSXG6bcChAtR8fhDOxT5-4ZXuwO8"
+                "auth-token": authToken
             },
 
             body: data
@@ -82,7 +85,7 @@ const NoteState = (props) => {
     // Editing a note
     const editNote = async (note) => {
         const response = await editNoteToServer(note);
-        console.log('Response Update', response);
+        // console.log('Response Update', response);
 
         if (response.status !== 200) return;
 
@@ -103,7 +106,7 @@ const NoteState = (props) => {
             method: "PUT", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzVjZjQ5MDYwNWNmYjhmNzU4NTdhIn0sImlhdCI6MTY3ODIxMzA1Mn0.Le8SUdfNIi66adYQSXG6bcChAtR8fhDOxT5-4ZXuwO8"
+                "auth-token": authToken
             },
 
             body: data
@@ -120,8 +123,8 @@ const NoteState = (props) => {
     const deleteNote = async (id) => {
 
         const response = await deleteNoteFromServer(id);
-        console.log('Delete Note', response)
-        console.log('Delete Note Status', response.status);
+        // console.log('Delete Note', response)
+        // console.log('Delete Note Status', response.status);
 
         if (response.status !== 200) return;
 
@@ -136,7 +139,7 @@ const NoteState = (props) => {
             method: "DELETE", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzVjZjQ5MDYwNWNmYjhmNzU4NTdhIn0sImlhdCI6MTY3ODIxMzA1Mn0.Le8SUdfNIi66adYQSXG6bcChAtR8fhDOxT5-4ZXuwO8"
+                "auth-token": authToken
             },
         });
 

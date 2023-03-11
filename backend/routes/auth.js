@@ -19,10 +19,11 @@ router.post("/createuser",
         body('password', 'Password in Invalid :(').isLength({ min: 5 })
     ],
     async (req, res) => {
+        let success = false;
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() })
+            return res.status(400).json({ success, status: "false", errors: errors.array() })
         }
 
         try {
@@ -31,7 +32,7 @@ router.post("/createuser",
             let user = await User.findOne({ email: req.body.email });
 
             if (user) {
-                return res.status(400).json({ error: 'Sorry this email is already taken' });
+                return res.status(400).json({ success, status: "false", error: 'Sorry this email is already taken' });
             }
 
             const salt = await bcrypt.genSalt(10);
@@ -50,17 +51,19 @@ router.post("/createuser",
                 }
             }
 
-            const autToken = jwt.sign(data, JWT_SECRET);
+            const authToken = jwt.sign(data, JWT_SECRET);
+            success = true;
 
             res.json({
-                status: 'Successful',
+                success,
+                status: 'true',
                 message: 'User Successfuly created',
                 user: user,
-                autToken
+                authToken
             });
 
         } catch (error) {
-            res.status(500).json(error.message);
+            res.status(500).json({ success, error: error.message });
         }
 
     });
