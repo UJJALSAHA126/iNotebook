@@ -3,16 +3,19 @@ import { useState } from "react";
 import hostId, { getAuthToken } from "../../constants/Constants";
 
 
-
 const NoteState = (props) => {
     const notesInitial = [];
 
+    // const { token } = props;
+    // console.log('token', token);
+
     const [notes, setNotes] = useState(notesInitial)
-    const authToken = getAuthToken();
 
 
     // Fetching all the notes from the server
     const fetchAllNotes = async () => {
+        const authToken = getAuthToken();
+        if (!authToken) return;
 
         const response = await fetch(`${hostId}/api/notes/fetchallnotes/`, {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -22,19 +25,26 @@ const NoteState = (props) => {
             },
         });
 
-        const json = await response.json();
+        const notes = await response.json();
+        // if (!notes || notes.length <= 0) return;
 
-        // console.log('json', json);
-        json.sort((a, b) => { return b.date.localeCompare(a.date) });
+        // const notes = await JSON.stringify(json).json();
+        console.log('json', notes);
+        // if (notes)
+        if (notes && notes.length > 0)
+            notes.sort((a, b) => { return b.date.localeCompare(a.date) });
         // console.log('json', json);
 
-        setNotes(json);
+        setNotes(notes);
         // // console.log('JSON', json);
     }
 
 
     // Adding a note
     const addNote = async (note) => {
+        const authToken = getAuthToken();
+        if (!authToken) return;
+
         const newNote = {
             "title": note.title,
             "description": note.description,
@@ -43,7 +53,7 @@ const NoteState = (props) => {
         }
 
         const response = await addNoteToServer(newNote);
-        // console.log('Response Add', response);
+        console.log('Response Add', response);
 
         if (response.status !== 200) return;
 
@@ -52,7 +62,7 @@ const NoteState = (props) => {
         newNotes.sort((a, b) => { return b.date.localeCompare(a.date) });
 
         setNotes(newNotes);
-        // console.log('Note Added : ', json);
+        console.log('Note Added : ', json);
     }
 
     // Add note to the server
@@ -70,7 +80,7 @@ const NoteState = (props) => {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": authToken
+                "auth-token": getAuthToken()
             },
 
             body: data
@@ -84,6 +94,10 @@ const NoteState = (props) => {
 
     // Editing a note
     const editNote = async (note) => {
+
+        const authToken = getAuthToken();
+        if (!authToken) return;
+
         const response = await editNoteToServer(note);
         // console.log('Response Update', response);
 
@@ -106,7 +120,7 @@ const NoteState = (props) => {
             method: "PUT", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": authToken
+                "auth-token": getAuthToken()
             },
 
             body: data
@@ -121,6 +135,9 @@ const NoteState = (props) => {
 
     // Deleting a note
     const deleteNote = async (id) => {
+
+        const authToken = getAuthToken();
+        if (!authToken) return;
 
         const response = await deleteNoteFromServer(id);
         // console.log('Delete Note', response)
@@ -139,14 +156,12 @@ const NoteState = (props) => {
             method: "DELETE", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": authToken
+                "auth-token": getAuthToken()
             },
         });
 
         return response;
     }
-
-
 
 
 

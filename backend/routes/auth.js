@@ -76,10 +76,10 @@ router.post('/login',
         body('password', 'Password cannot be blank !').exists()
     ],
     async (req, res) => {
-
+        let success = false;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() })
+            return res.status(400).json({ success, errors: errors.array() })
         }
 
         const { email, password } = req.body;
@@ -89,12 +89,12 @@ router.post('/login',
             let user = await User.findOne({ email: email });
 
             if (!user) {
-                return res.status(400).json({ error: 'Credentials are not matced !' });
+                return res.status(400).json({ success, error: 'Credentials are not matced !' });
             }
 
             const passwordCompare = bcrypt.compareSync(password, user.password);
             if (!passwordCompare) {
-                return res.status(400).json({ error: 'Credentials are not matced !' });
+                return res.status(400).json({ success, error: 'Credentials are not matced !' });
             }
 
             const data = {
@@ -104,8 +104,10 @@ router.post('/login',
             }
 
             const authToken = jwt.sign(data, JWT_SECRET);
+            success = true;
 
             res.json({
+                success,
                 message: 'Log in successfull',
                 userId: user.id,
                 authToken
@@ -113,7 +115,7 @@ router.post('/login',
 
         }
         catch (error) {
-            res.status(500).json(error.message);
+            res.status(500).json({ success, error: error.message });
         }
     });
 

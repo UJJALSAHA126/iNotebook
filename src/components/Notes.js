@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import noteContext from '../context/notes/noteContext'
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 
 function Notes() {
@@ -14,6 +14,7 @@ function Notes() {
 
     useEffect(() => {
         fetchAllNotes();
+        // console.log('Notes useEffect');
         // eslint-disable-next-line
     }, [])
 
@@ -64,7 +65,7 @@ function Notes() {
             </button>
 
             {/* <!-- Modal --> */}
-            <div className="modal fade" style={{width:"100%"}} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" style={{ width: "100%" }} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl" >
                     <div className="modal-content">
 

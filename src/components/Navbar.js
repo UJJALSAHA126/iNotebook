@@ -1,8 +1,17 @@
 import React from 'react'
 import { Link, useLocation } from "react-router-dom";
+import { getAuthToken } from '../constants/Constants';
+import { useNavigate } from 'react-router-dom';
+import { removeAuthToken } from '../constants/Constants';
 
 function Navbar() {
     let location = useLocation();
+    const navigate = useNavigate();
+
+    const logOut = () => {
+        removeAuthToken();
+        navigate("/");
+    }
 
     return (
         // data-bs-theme="dark"
@@ -26,14 +35,18 @@ function Navbar() {
                         </li>
                     </ul>
 
-                    <form className="d-flex" role="search">
-                        <Link to="/login">
-                            <button type="button" className="btn btn-outline-primary mx-2">Log in</button>
-                        </Link>
-                        <Link to="/signin">
-                            <button type="button" className="btn btn-outline-primary mx-2">Sign in</button>
-                        </Link>
-                    </form>
+                    {
+                        (!getAuthToken()) ? <form className="d-flex">
+                            <Link to="/login">
+                                <button type="button" className="btn btn-outline-primary mx-2">Log in</button>
+                            </Link>
+                            <Link to="/signup">
+                                <button type="button" className="btn btn-outline-primary mx-2">Sign Up</button>
+                            </Link>
+                        </form> :
+                            <button type="button" className="btn btn-outline-primary mx-2"
+                                onClick={logOut}>Log out</button>
+                    }
 
                 </div>
             </div>
